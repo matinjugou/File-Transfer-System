@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django File Upload Example</title>
+</head>
+<body>
+    <!-- List of uploaded documents -->
+    {% if files %}
+        <ul>
+        {% for myFile in files %}
+            <li><a href="{{ myFile.file.url }}">{{ myFile.file.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No files.</p>
+    {% endif %}
+
+        <!-- Upload form. Note enctype attribute! -->
+        <form action="{% url 'file' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.file.label_tag }} {{ form.file.help_text }}</p>
+            <p>
+                {{ form.file.errors }}
+                {{ form.file }}
+            </p>
+            <p>
+                {{ form.fileType.label_tag }}
+            </p>
+            <p>
+                {{ form.fileType.errors }}
+                {{ form.fileType }}
+            </p>
+            <p>
+                {{ form.validTime.label_tag }}
+            </p>
+            <p>
+                {{ form.validTime.errors }}
+                {{ form.validTime }}
+            </p>
+            <p><input type="submit" value="Upload" /></p>
+        </form>
+</body>
+</html>
