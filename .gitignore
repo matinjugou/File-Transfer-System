@@ -4,8 +4,11 @@
 # JetBrains
 .idea
 
-#files
+# files
 /media/files/
 
 /file_manager/migrations/
 __pycache__/
+
+# virtual env
+.file_venv
