@@ -1,0 +1,11 @@
+# Custom files
+/configs.json
+
+# JetBrains
+.idea
+
+#files
+/media/files/
+
+/file_manager/migrations/
+__pycache__/
