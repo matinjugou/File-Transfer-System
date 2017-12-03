@@ -5,7 +5,7 @@ from file_service import settings
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 
 import json
@@ -42,7 +42,12 @@ class FileView(BaseView):
 @method_decorator(csrf_exempt, name='dispatch')
 class FileView2(BaseView):
     def post(self):
-        self.check_input('validTime')
+        try:
+            self.check_input('validTime')
+        except Exception:
+            response = HttpResponseBadRequest()
+            return response
+
         new_file = myFile(
             fileType='',
             validTime=self.input['validTime'],
