@@ -14,3 +14,9 @@ class FileForm(forms.Form):
     validTime = forms.IntegerField(
         label='please type in valid time'
     )
+
+
+class ImageForm(forms.Form):
+    fileUrl = forms.CharField(
+        label='please type in image url'
+    )

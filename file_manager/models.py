@@ -9,3 +9,5 @@ class myFile(models.Model):
     fileUrl = models.CharField(max_length=256)
     uploadTime = models.DateField(auto_now_add=True)
     file = models.FileField(upload_to='files/%Y/%m/%d')
+    image = models.ImageField(upload_to='images/%Y/%m/%d', blank=True, null=True)
+    imageUrl = models.CharField(max_length=256, default='')
