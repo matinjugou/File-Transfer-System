@@ -121,7 +121,7 @@ class ImageView(BaseView):
 
                     new_image = im.resize((new_width, new_height))
                     buffer = BytesIO()
-                    new_image.save(fp=buffer, format='JPEG')
+                    new_image.save(fp=buffer, format=im.format)
                     pillow_image = ContentFile(buffer.getvalue())
 
                     m_file.image = InMemoryUploadedFile(
