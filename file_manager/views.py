@@ -152,7 +152,7 @@ class ImageView(BaseView):
                 # print(notice)
                 return HttpResponseBadRequest(notice)
 
-        file_type = "image/jpeg"
+        file_type = m_file.fileType
 
         response = HttpResponse(json.dumps({
             'code': 0,

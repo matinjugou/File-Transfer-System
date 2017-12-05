@@ -6,6 +6,7 @@
 
 # files
 /media/files/
+/media/images/
 
 /file_manager/migrations/
 __pycache__/
