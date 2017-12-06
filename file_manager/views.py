@@ -26,7 +26,7 @@ class FileView(BaseView):
             response = HttpResponseBadRequest()
             return response
 
-        if self.request.FILES['file'].size > 100000000:
+        if self.request.FILES['file'].size > 10500000:
             response = HttpResponseBadRequest('The file is too large!')
             return response
 
@@ -61,7 +61,7 @@ class FileView2(BaseView):
             response = HttpResponseBadRequest()
             return response
 
-        if self.request.FILES['file'].size > 100000000:
+        if self.request.FILES['file'].size > 10500000:
             response = HttpResponseBadRequest('The file is too large!')
             return response
 
