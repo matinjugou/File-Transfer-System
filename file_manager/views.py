@@ -20,7 +20,16 @@ __author__ = "Bifei Yang"
 @method_decorator(csrf_exempt, name='dispatch')
 class FileView(BaseView):
     def post(self):
-        self.check_input('fileType', 'validTime')
+        try:
+            self.check_input('fileType', 'validTime')
+        except Exception:
+            response = HttpResponseBadRequest()
+            return response
+
+        if self.request.FILES['file'].size > 100000000:
+            response = HttpResponseBadRequest('The file is too large!')
+            return response
+
         new_file = myFile(
             fileType=self.input['fileType'],
             validTime=self.input['validTime'],
@@ -50,6 +59,10 @@ class FileView2(BaseView):
             self.check_input('validTime')
         except Exception:
             response = HttpResponseBadRequest()
+            return response
+
+        if self.request.FILES['file'].size > 100000000:
+            response = HttpResponseBadRequest('The file is too large!')
             return response
 
         new_file = myFile(
