@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Compress Example</title>
+</head>
+<body>
+    <form action="{% url 'image' %}" method="post">
+        {% csrf_token %}
+        <p>
+            {{ form.fileUrl.label_tag }}
+        </p>
+        <p>
+            {{ form.fileUrl.errors }}
+            {{ form.fileUrl }}
+        </p>
+        <p>
+            <input type="submit" value="Upload" />
+        </p>
+    </form>
+</body>
+</html>

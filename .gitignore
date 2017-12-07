@@ -1,0 +1,15 @@
+# Custom files
+/configs.json
+
+# JetBrains
+.idea
+
+# files
+/media/files/
+/media/images/
+
+/file_manager/migrations/
+__pycache__/
+
+# virtual env
+.file_venv
