@@ -1,6 +1,7 @@
 from basic.base import BaseView
-from file_manager.models import myFile
+from file_manager.models import myFile, myRobot
 from file_manager.forms import FileForm, ImageForm
+from file_manager.AnsMake import find_answer, check_file
 from file_service import settings
 
 from django.views.decorators.csrf import csrf_exempt
@@ -178,3 +179,87 @@ class ImageView(BaseView):
     def get(self):
         form = ImageForm()
         return render(self.request, 'ImageCompress.html', {'form': form})
+
+@method_decorator(csrf_exempt, name='dispatch')
+class RobotView(BaseView):
+    def post(self):
+        try:
+            self.check_input('companyId')
+        except Exception:
+            response = HttpResponseBadRequest()
+            return response
+
+        if "text" not in self.request.FILES['file'].content_type:
+            response = HttpResponseBadRequest("Format error, please upload txt file")
+            return response
+
+        companyId = self.input['companyId']
+        robot_txt = myRobot.objects.filter(companyId=companyId)
+        if robot_txt.length != 0:
+            robot_txt[0].file = self.request.FILES['file']
+            robot_txt[0].save()
+            new_file = robot_txt[0]
+            new_file.fileUrl = settings.CONFIGS['SITE_DOMAIN'] + new_file.file.url
+            new_file.save()
+        else:
+            new_file = myRobot(
+                fileType='',
+                fileUrl='',
+                file=self.request.FILES['file'],
+                companyId=self.input['companyId']
+            )
+            new_file.save()
+            new_file.file.close()
+
+            new_file.fileType = self.request.FILES['file'].content_type
+            new_file.fileUrl = settings.CONFIGS['SITE_DOMAIN'] + new_file.file.url
+            new_file.save()
+
+        res = check_file(new_file.file)
+        if res['code'] == 0:
+            response = HttpResponse(json.dumps({
+                'code': 0,
+                'msg': "",
+                'data': new_file.fileUrl,
+                'type': new_file.fileType
+            }), content_type="application/json")
+        else:
+            response = HttpResponse(json.dumps(res), content_type="application/json")
+
+        return response
+
+    def get(self):
+        try:
+            self.check_input('question', 'companyId')
+        except Exception:
+            response = HttpResponseBadRequest()
+            return response
+
+        companyId = self.input['companyId']
+        robot_txt = myRobot.objects.filter(companyId=companyId)
+        question = self.input['question']
+
+        if robot_txt.length == 1:
+            try:
+                result = find_answer(question, robot_txt[0].file.url)
+                response = HttpResponse(json.dumps({
+                    'code': 0,
+                    'msg': "",
+                    'data': result
+                }), content_type="application/json")
+            except Exception as e:
+                response = HttpResponse(json.dumps({
+                    'code': -1,
+                    'msg': str(e),
+                    'data': ""
+                }), content_type="application/json")
+
+            return response
+        else:
+            response = HttpResponse(json.dumps({
+                'code': -1,
+                'msg': "Robot txt is not uploaded",
+                'data': ""
+            }), content_type="application/json")
+
+            return response
