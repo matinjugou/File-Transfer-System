@@ -195,7 +195,7 @@ class RobotView(BaseView):
 
         companyId = self.input['companyId']
         robot_txt = myRobot.objects.filter(companyId=companyId)
-        if robot_txt.length != 0:
+        if len(robot_txt) != 0:
             robot_txt[0].file = self.request.FILES['file']
             robot_txt[0].save()
             new_file = robot_txt[0]
@@ -239,7 +239,7 @@ class RobotView(BaseView):
         robot_txt = myRobot.objects.filter(companyId=companyId)
         question = self.input['question']
 
-        if robot_txt.length == 1:
+        if len(robot_txt) == 1:
             try:
                 result = find_answer(question, robot_txt[0].file.url)
                 response = HttpResponse(json.dumps({
