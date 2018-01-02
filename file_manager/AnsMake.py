@@ -11,8 +11,8 @@ def find_answer(input, file_url):
         if not lines:
             break
         for line in lines:
-            question = line.split(' ')[0]
-            ans = line.split(' ')[1]
+            question = line.split()[0]
+            ans = line.split()[1]
             pairs.append((question, ans))
 
     pairs.sort(key=lambda x:synonyms(inputSentence, x[0], seg=True))
@@ -35,8 +35,8 @@ def check_file(file):
             for line in lines:
                 count += 1
                 try:
-                    question = line.split(' ')[0]
-                    answer = line.split(' ')[1]
+                    question = line.split()[0]
+                    answer = line.split()[1]
                 except:
                     res = {'code': -1, 'msg': '第' + str(count) + '行格式错误'}
                     return res

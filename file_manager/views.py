@@ -189,7 +189,7 @@ class RobotView(BaseView):
             response = HttpResponseBadRequest()
             return response
 
-        if "text" not in self.request.FILES['file'].content_type:
+        if "text" not in str(self.request.FILES['file'].content_type):
             response = HttpResponseBadRequest("Format error, please upload txt file")
             return response
 
