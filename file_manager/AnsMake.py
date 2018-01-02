@@ -1,9 +1,13 @@
 import synonyms
 
 
-def find_answer(input, file):
+def find_answer(input, file_url):
     inputSentence = input
-    CorpusFile = file
+    try:
+        CorpusFile = open(file_url, 'r')
+    except:
+        print("Could not open file")
+        return -1
     #inputSentence = CorpusFile.readline()
     pairs = []
     while True:

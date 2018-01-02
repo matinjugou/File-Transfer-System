@@ -241,12 +241,19 @@ class RobotView(BaseView):
 
         if len(robot_txt) == 1:
             try:
-                result = find_answer(question, robot_txt[0].file)
-                response = HttpResponse(json.dumps({
-                    'code': 0,
-                    'msg': "",
-                    'data': result
-                }), content_type="application/json")
+                result = find_answer(question, str(robot_txt[0].file.url)[1:])
+                if result != -1:
+                    response = HttpResponse(json.dumps({
+                        'code': 0,
+                        'msg': "",
+                        'data': result
+                    }), content_type="application/json")
+                else:
+                    response = HttpResponse(json.dumps({
+                        'code': -1,
+                        'msg': 'Could not open file',
+                        'data': ""
+                    }), content_type="application/json")
             except Exception as e:
                 response = HttpResponse(json.dumps({
                     'code': -1,
