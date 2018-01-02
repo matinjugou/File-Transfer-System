@@ -241,7 +241,7 @@ class RobotView(BaseView):
 
         if len(robot_txt) == 1:
             try:
-                result = find_answer(question, robot_txt[0].file.url)
+                result = find_answer(question, robot_txt[0].file)
                 response = HttpResponse(json.dumps({
                     'code': 0,
                     'msg': "",

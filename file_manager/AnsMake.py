@@ -1,9 +1,9 @@
 import synonyms
 
 
-def find_answer(input, file_url):
+def find_answer(input, file):
     inputSentence = input
-    CorpusFile = open(file_url, 'r')
+    CorpusFile = file
     #inputSentence = CorpusFile.readline()
     pairs = []
     while True:
