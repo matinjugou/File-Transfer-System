@@ -7,9 +7,15 @@
 # files
 /media/files/
 /media/images/
+/media/robots/
 
 /file_manager/migrations/
 __pycache__/
 
 # virtual env
 .file_venv
+
+# jieba
+/jieba
+
+/record_question.txt
