@@ -19,6 +19,7 @@ def find_answer(input, file_url):
             ans = line.split()[1]
             pairs.append((question, ans))
 
+    print('inputSentece=', inputSentence, "pairs[0]", pairs[0])
     pairs.sort(key=lambda x:-synonyms.compare(inputSentence, x[0], seg=True))
     #print(pairs[0])
     #synonyms("test", "test", seg=True)    

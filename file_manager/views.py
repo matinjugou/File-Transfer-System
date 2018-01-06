@@ -241,7 +241,8 @@ class RobotView(BaseView):
         companyId = self.input['companyId']
         robot_txt = myRobot.objects.filter(companyId=companyId)
         question = self.input['question']
-        
+        print(question)
+
         record_file = open('record_question.txt', 'a')
         record_file.write(question)
         record_file.close()
