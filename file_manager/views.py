@@ -12,6 +12,9 @@ from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.base import ContentFile
 
+import jieba
+import jieba.analyse
+
 import json
 from io import BytesIO
 
@@ -238,28 +241,32 @@ class RobotView(BaseView):
         companyId = self.input['companyId']
         robot_txt = myRobot.objects.filter(companyId=companyId)
         question = self.input['question']
+        
+        record_file = open('record_question.txt', 'a')
+        record_file.write(question)
+        record_file.close()
 
         if len(robot_txt) == 1:
-            try:
-                result = find_answer(question, str(robot_txt[0].file.url)[1:])
-                if result != -1:
-                    response = HttpResponse(json.dumps({
-                        'code': 0,
-                        'msg': "",
-                        'data': result
-                    }), content_type="application/json")
-                else:
-                    response = HttpResponse(json.dumps({
-                        'code': -1,
-                        'msg': 'Could not open file',
-                        'data': ""
-                    }), content_type="application/json")
-            except Exception as e:
+            # try:
+            result = find_answer(question, str(robot_txt[0].file.url)[1:])
+            if result != -1:
+                response = HttpResponse(json.dumps({
+                    'code': 0,
+                    'msg': "",
+                    'data': result
+                }), content_type="application/json")
+            else:
                 response = HttpResponse(json.dumps({
                     'code': -1,
-                    'msg': str(e),
+                    'msg': 'Could not open file',
                     'data': ""
                 }), content_type="application/json")
+            # except Exception as e:
+            #    response = HttpResponse(json.dumps({
+            #        'code': -1,
+            #        'msg': str(e),
+            #        'data': ""
+            #    }), content_type="application/json")
 
             return response
         else:
@@ -270,3 +277,12 @@ class RobotView(BaseView):
             }), content_type="application/json")
 
             return response
+@method_decorator(csrf_exempt, name='dispatch')
+class WordAnalyseView(BaseView):
+    def get(self):
+        record = open('record_question.txt').read()
+        tags = jieba.analyse.extract_tags(record, topK=20, withWeight=True)
+        response = HttpResponse(json.dumps({
+            'tags': tags
+        }), content_type="application/json")
+        return response

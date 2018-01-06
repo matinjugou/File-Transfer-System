@@ -19,11 +19,15 @@ def find_answer(input, file_url):
             ans = line.split()[1]
             pairs.append((question, ans))
 
-    pairs.sort(key=lambda x:synonyms(inputSentence, x[0], seg=True))
+    pairs.sort(key=lambda x:-synonyms.compare(inputSentence, x[0], seg=True))
+    #print(pairs[0])
+    #synonyms("test", "test", seg=True)    
 
     ans = ""
     for i in range(5):
-        ans += str(i + 1) + ' ' + pairs[i][1] + '\n'
+        ans += pairs[i][1]
+        if i != 4 :
+          ans += '\n'
     #print(ans)
     return ans
 
